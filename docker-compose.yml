@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  whatsapp-bot:
+    # Указываем Docker собирать образ из текущей директории (где лежит Dockerfile)
+    build: .
+    # Даем контейнеру имя для удобства
+    container_name: whatsapp_bot_service
+    # Перезапускать контейнер автоматически, если он упал (но не при штатной остановке)
+    restart: unless-stopped
+    # Очень важный блок!
+    volumes:
+      # Пробрасываем папку playwright_profile_py с нашего компьютера
+      # внутрь контейнера. Это позволит сохранять сессию WhatsApp между перезапусками контейнера.
+      # Слева путь на вашем хосте, справа - путь внутри контейнера.
+      - ./playwright_profile_py:/app/playwright_profile_py
